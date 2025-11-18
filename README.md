@@ -6,10 +6,16 @@
 
 ## Instalación
 1. Crear y activar entorno virtual:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+    - **Windows**:
+       ```powershell
+       python -m venv venv
+       .\venv\Scripts\activate
+       ```
+    - **Linux/Mac**:
+       ```bash
+       python3 -m venv venv
+       source venv/bin/activate
+       ```
 2. Instalar dependencias:
    ```bash
    pip install -r requirements.txt

@@ -3,7 +3,7 @@ import requests
 import os
 import json
 
-SERVER_URL = "http://localhost:8000"  # Cambia esto por la IP del servidor en red
+SERVER_URL = "http://192.168.20.46:8000"  # Cambia esto por la IP del servidor en red
 SESSION_FILE = ".session"
 
 def save_session(user):
