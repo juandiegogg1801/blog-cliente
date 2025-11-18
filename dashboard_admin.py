@@ -21,17 +21,24 @@ def admin_dashboard():
             new_password = st.text_input(f"Nueva contraseña", type="password", key=f"edit_password_{u['id']}")
             new_type = st.selectbox(f"Tipo", ["usuario", "admin"], index=0 if u['type']=="usuario" else 1, key=f"edit_type_{u['id']}")
             if st.button(f"Actualizar usuario {u['id']}"):
-                r = requests.post(f"{SERVER_URL}/users/update", data={"user_id": u['id'], "username": new_username, "password": new_password, "type": new_type, "token": token})
+                r = requests.post(
+                    f"{SERVER_URL}/users/update",
+                    json={"username": new_username, "password": new_password, "type": new_type},
+                    params={"user_id": u["id"], "token": token}
+                )
                 if r.status_code == 200:
                     st.success("Usuario actualizado")
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error(r.json().get("detail", "Error al actualizar usuario"))
             if st.button(f"Eliminar usuario {u['id']}"):
-                r = requests.post(f"{SERVER_URL}/users/delete", data={"user_id": u['id'], "token": token})
+                r = requests.post(
+                    f"{SERVER_URL}/users/delete",
+                    params={"user_id": u["id"], "token": token}
+                )
                 if r.status_code == 200:
                     st.success("Usuario eliminado")
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error(r.json().get("detail", "Error al eliminar usuario"))
 
@@ -40,10 +47,10 @@ def admin_dashboard():
     new_password = st.text_input("Contraseña", type="password")
     new_type = st.selectbox("Tipo", ["usuario", "admin"])
     if st.button("Crear usuario"):
-        r = requests.post(f"{SERVER_URL}/users/create", data={"username": new_username, "password": new_password, "type": new_type, "token": token})
+        r = requests.post(f"{SERVER_URL}/users/create", json={"username": new_username, "password": new_password, "type": new_type}, params={"token": token})
         if r.status_code == 200:
             st.success("Usuario creado")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error(r.json().get("detail", "Error al crear usuario"))
 
