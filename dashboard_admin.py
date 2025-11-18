@@ -27,10 +27,14 @@ def admin_dashboard():
                     params={"user_id": u["id"], "token": token}
                 )
                 if r.status_code == 200:
-                    st.success("Usuario actualizado")
+                    st.session_state["usuario_actualizado"] = True
                     st.rerun()
                 else:
                     st.error(r.json().get("detail", "Error al actualizar usuario"))
+
+        if st.session_state.get("usuario_actualizado"):
+            st.success("Usuario actualizado")
+            del st.session_state["usuario_actualizado"]
             if st.button(f"Eliminar usuario {u['id']}"):
                 r = requests.post(
                     f"{SERVER_URL}/users/delete",
@@ -52,7 +56,8 @@ def admin_dashboard():
             st.success("Usuario creado")
             st.rerun()
         else:
-            st.error(r.json().get("detail", "Error al crear usuario"))
+            error_detail = r.json().get("detail", "Error al crear usuario")
+            st.error(f"Error al crear usuario: {error_detail}")
 
     st.subheader("Gestión de publicaciones de todos")
     resp = requests.get(f"{SERVER_URL}/posts/list", params={"token": token})
@@ -69,7 +74,7 @@ def admin_dashboard():
     st.write(f"Usuario: {user['username']}")
     new_password = st.text_input("Nueva contraseña", type="password")
     if st.button("Cambiar contraseña"):
-        r = requests.post(f"{SERVER_URL}/users/update_password", data={"new_password": new_password, "token": token})
+        r = requests.post(f"{SERVER_URL}/users/update_password", params={"new_password": new_password, "token": token})
         if r.status_code == 200:
             st.success("Contraseña actualizada")
         else:

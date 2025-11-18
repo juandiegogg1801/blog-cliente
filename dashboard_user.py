@@ -39,10 +39,10 @@ def user_dashboard():
     title = st.text_input("Título")
     content = st.text_area("Contenido")
     if st.button("Crear publicación"):
-        r = requests.post(f"{SERVER_URL}/posts/create", data={"title": title, "content": content, "token": token})
+        r = requests.post(f"{SERVER_URL}/posts/create", params={"title": title, "content": content, "token": token})
         if r.status_code == 200:
             st.success("Publicación creada")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("Error al crear publicación")
 
@@ -50,7 +50,7 @@ def user_dashboard():
     st.write(f"Usuario: {user['username']}")
     new_password = st.text_input("Nueva contraseña", type="password")
     if st.button("Cambiar contraseña"):
-        r = requests.post(f"{SERVER_URL}/users/update_password", data={"new_password": new_password, "token": token})
+        r = requests.post(f"{SERVER_URL}/users/update_password", params={"new_password": new_password, "token": token})
         if r.status_code == 200:
             st.success("Contraseña actualizada")
         else:
