@@ -5,7 +5,6 @@ from auth import login, logout, get_user_type
 
 st.set_page_config(page_title="Gestión de Blog", layout="wide")
 
-
 from auth import load_session
 
 if "user" not in st.session_state:
